@@ -8,9 +8,6 @@ function Home() {
     <>
       <Header />
       <ImageSlider />
-      <h1 style={{ textAlign: "center", margin: "30px 0" }}>
-        Welcome to KrishiRatna 🌾
-      </h1>
       <Footer />
     </>
   );

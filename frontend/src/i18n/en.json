@@ -1,0 +1,23 @@
+{
+  "app_name": "KrishiRatna",
+  "tagline": "Smart Farming for India",
+
+  "home_title": "खेती अब बने Smart 🌾",
+  "home_subtitle": "Soil aur Mausam ke hisaab se sahi fasal ka chayan",
+
+  "login": "Login",
+  "register": "Register",
+  "logout": "Logout",
+  "back_home": "← Home",
+
+  "welcome_farmer": "Welcome Farmer 👨‍🌾",
+  "new_user": "New here? Register 🌱",
+
+  "form_title": "🌱 Apni Fasal Jaane",
+  "use_weather": "📍 Use Current Location’s Weather",
+  "submit": "Get Recommendation 🚜",
+  "loading": "Analyzing...",
+
+  "best_crop": "🌾 Aapke Khet ke liye Best Fasal",
+  "error": "Failed to get recommendation"
+}
