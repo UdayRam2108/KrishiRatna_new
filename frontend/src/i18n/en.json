@@ -44,5 +44,13 @@
 
   "cta_title": "🚀 Start Smart Farming Today",
   "cta_desc": "Make better decisions and increase your crop yield.",
-  "cta_button": "Get Started 🌱"
+  "cta_button": "Get Started 🌱",
+  "rates": "RATES",
+  "crop_wheat": "Wheat",
+  "crop_maize": "Maize",
+  "crop_bajra": "Bajra",
+  "crop_onion": "Onion",
+  "crop_potato": "Potato",
+  "crop_chilli": "Chilli"
+
 }

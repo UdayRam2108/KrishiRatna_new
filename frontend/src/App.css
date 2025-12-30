@@ -698,3 +698,190 @@ body.dark {
   fill: #000;
 }
 
+/* ===============================
+   📊 MARKET TICKER
+   =============================== */
+
+.market-ticker {
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 10px 16px;
+  gap: 16px;
+}
+
+.ticker-track {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.ticker-content {
+  white-space: nowrap;
+  display: inline-block;
+  padding-left: 100%;
+  animation: tickerMove 18s linear infinite;
+  font-size: 0.95rem;
+}
+
+.market-ticker:hover .ticker-content {
+  animation-play-state: paused;
+}
+
+.ticker-btn {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 6px 14px;
+  border-radius: 18px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ticker-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+@keyframes tickerMove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+/* ===============================
+   📊 MARKET RATE STRIP
+   =============================== */
+
+.market-strip {
+  display: flex;
+  align-items: center;
+  background: #f3faf5;
+  border-top: 1px solid #cce7d6;
+  border-bottom: 1px solid #cce7d6;
+  overflow: hidden;
+  height: 48px;
+  font-size: 0.95rem;
+}
+
+/* LEFT FIXED AREA */
+.market-strip-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  background: #1e7f43;
+  color: #fff;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* LIVE DOT */
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: red;
+  border-radius: 50%;
+  animation: blinkLive 1s infinite;
+}
+
+@keyframes blinkLive {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+.rates-text {
+  letter-spacing: 0.5px;
+}
+
+/* MOVING AREA */
+.market-strip-track {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.market-strip-content {
+  white-space: nowrap;
+  display: inline-block;
+  padding-left: 100%;
+  animation: marketMove 22s linear infinite;
+}
+
+.market-strip:hover .market-strip-content {
+  animation-play-state: paused;
+}
+
+/* RIGHT BUTTON */
+.market-strip-btn {
+  background: transparent;
+  border: none;
+  color: #1e7f43;
+  font-weight: 600;
+  padding: 0 16px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.market-strip-btn:hover {
+  text-decoration: underline;
+}
+
+/* RIGHT ➝ LEFT */
+@keyframes marketMove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .market-strip {
+    font-size: 0.85rem;
+  }
+
+  .market-strip-btn {
+    display: none;
+  }
+}
+/* Price trend */
+.trend-up {
+  color: green;
+  font-weight: bold;
+}
+
+.trend-down {
+  color: red;
+  font-weight: bold;
+}
+
+.trend-same {
+  color: #6b7280;
+}
+.market-page {
+  padding: 40px;
+}
+
+.market-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.market-table th,
+.market-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.market-table th {
+  background: #1e7f43;
+  color: white;
+}

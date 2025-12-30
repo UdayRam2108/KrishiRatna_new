@@ -4,6 +4,7 @@ import Login from "./Login";
 import Detail from "./Detail";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
+import MarketPrices from "./MarketPrices";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -23,6 +24,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* 🌾 NEW PAGE */}
+        <Route path="/market-prices" element={<MarketPrices />} />
       </Routes>
     </BrowserRouter>
   );

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     # Your Apps
     'recommender',
+    'mandi',
     
 ]
 
@@ -134,4 +135,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+}
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
 }
