@@ -19,5 +19,30 @@
   "loading": "Analyzing...",
 
   "best_crop": "🌾 Aapke Khet ke liye Best Fasal",
-  "error": "Failed to get recommendation"
+  "error": "Failed to get recommendation",
+
+  "about_title": "🌾 What is KrishiRatna?",
+  "about_desc": "KrishiRatna helps farmers choose the best crop using soil nutrients and real-time weather data.",
+
+  "how_it_works": "⚙️ How KrishiRatna Works?",
+  "how_it_works_sub": "Get smart crop recommendations in just 3 simple steps",
+
+  "wf_step1_title": "Login / Register",
+  "wf_step1_desc": "Create your account or login to continue",
+
+  "wf_step2_title": "Soil & Weather Data",
+  "wf_step2_desc": "Enter soil values and use live weather",
+
+  "wf_step3_title": "Crop Recommendation",
+  "wf_step3_desc": "See the best crop for your field",
+
+  "benefits_title": "🌿 Why KrishiRatna?",
+  "benefit1": "🌾 Smart crop selection",
+  "benefit2": "☁️ Weather-based decisions",
+  "benefit3": "👨‍🌾 Farmer friendly",
+  "benefit4": "🌍 Supports Indian languages",
+
+  "cta_title": "🚀 Start Smart Farming Today",
+  "cta_desc": "Make better decisions and increase your crop yield.",
+  "cta_button": "Get Started 🌱"
 }

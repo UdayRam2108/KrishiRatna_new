@@ -109,7 +109,7 @@ body {
    =============================== */
 
 .slider {
-  height: 72vh;
+  height: 85vh;
   background-size: cover;
   background-position: center;
 }
@@ -379,3 +379,322 @@ body.dark {
   position: relative;
   z-index: 2;
 }
+/* ===============================
+   🏡 HOME CONTENT
+   =============================== */
+
+.home-content {
+  padding: 60px 5%;
+}
+
+.content-section {
+  max-width: 1000px;
+  margin: auto;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.content-section.light {
+  background: #f0fdf4;
+  padding: 50px 30px;
+  border-radius: 22px;
+}
+
+.content-section h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 2.2rem;
+  color: var(--primary-green);
+  margin-bottom: 14px;
+}
+
+.content-section p {
+  font-size: 1.05rem;
+  color: var(--muted-text);
+  line-height: 1.7;
+}
+
+/* Steps */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.step-card {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+  font-size: 1rem;
+}
+
+.step-card span {
+  font-size: 2rem;
+}
+
+/* Benefits */
+.benefits {
+  list-style: none;
+  padding: 0;
+  margin-top: 25px;
+}
+
+.benefits li {
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
+
+/* CTA */
+.content-section.cta {
+  background: linear-gradient(135deg, #1e7f43, #155c31);
+  color: #ffffff;
+  padding: 60px 30px;
+  border-radius: 28px;
+}
+
+.content-section.cta h2 {
+  color: #ffffff;
+}
+
+.content-section.cta p {
+  color: #e5e7eb;
+  margin-bottom: 26px;
+}
+
+
+/* ===============================
+   ⚙️ HOW IT WORKS – WORKFLOW
+   =============================== */
+
+.workflow-title {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+
+.workflow-subtitle {
+  font-size: 1.05rem;
+  color: var(--muted-text);
+  margin-bottom: 40px;
+}
+
+.workflow-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.workflow-card {
+  background: #ffffff;
+  padding: 30px 24px;
+  border-radius: 22px;
+  width: 200px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  animation: slideUpFade 0.8s ease forwards;
+  opacity: 0;
+}
+
+.workflow-card .icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.workflow-card h4 {
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+  color: var(--primary-green);
+}
+
+.workflow-arrow {
+  font-size: 2rem;
+  animation: arrowPulse 1.6s infinite;
+}
+
+/* stagger animation */
+.step-1 { animation-delay: 0.1s; }
+.step-2 { animation-delay: 0.35s; }
+.step-3 { animation-delay: 0.6s; }
+
+/* fade-in sections */
+.fade-in {
+  animation: fadeInSection 0.9s ease;
+}
+
+/* ===============================
+   🎞️ ANIMATIONS
+   =============================== */
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInSection {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes arrowPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .workflow-arrow {
+    display: none;
+  }
+
+  .workflow-steps {
+    flex-direction: column;
+  }
+}
+
+
+/* ===============================
+   🖤 FOOTER
+   =============================== */
+
+.footer {
+  background: #000;
+  color: #fff;
+  padding: 60px 5% 20px;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+}
+
+.footer-col h3,
+.footer-col h4 {
+  margin-bottom: 14px;
+  color: #ffffff;
+}
+
+.footer-brand {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+}
+
+.footer-text {
+  font-size: 0.95rem;
+  color: #d1d5db;
+  line-height: 1.6;
+}
+
+.footer-col a {
+  display: block;
+  text-decoration: none;
+  color: #d1d5db;
+  margin-bottom: 8px;
+}
+
+.footer-col a:hover {
+  color: #ffffff;
+}
+
+.footer-socials {
+  margin-top: 14px;
+  display: flex;
+  gap: 14px;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+/* Info box */
+.footer-box {
+  border: 1px solid #ffffff55;
+  padding: 16px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
+
+/* Button */
+.footer-btn {
+  margin-top: 14px;
+  padding: 10px 22px;
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 22px;
+}
+
+.footer-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* Bottom bar */
+.footer-bottom {
+  margin-top: 50px;
+  padding-top: 14px;
+  border-top: 1px solid #ffffff33;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .footer {
+    text-align: center;
+  }
+
+  .footer-socials {
+    justify-content: center;
+  }
+}
+
+/* ===============================
+   🌐 FOOTER SOCIAL ICONS (B/W)
+   =============================== */
+
+.footer-social-icons {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.footer-social-icons a {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ffffff55;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.footer-social-icons svg {
+  width: 18px;
+  height: 18px;
+  fill: #d1d5db;
+}
+
+.footer-social-icons a:hover {
+  background: #ffffff;
+}
+
+.footer-social-icons a:hover svg {
+  fill: #000;
+}
+
