@@ -2,22 +2,24 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.db.models import Max
 from mandi.models import MandiPrice
-from datetime import date
 
 
 @api_view(["GET"])
 def mandi_prices(request):
     """
-    Returns latest mandi prices from DB with REAL trend (▲ / ▼)
+    Returns mandi prices from DB with REAL trend (▲ / ▼)
+
     Query params:
       ?state=Gujarat
       ?district=Rajkot
-      ?limit=6
+      ?limit=6   (optional)
     """
 
     state = request.GET.get("state", "").strip()
     district = request.GET.get("district", "").strip()
-    limit = int(request.GET.get("limit", 6))
+
+    limit = request.GET.get("limit")
+    limit = int(limit) if limit else 1000   # ✅ If not provided → return ALL
 
     # --------------------------
     # BASE QUERY
@@ -30,12 +32,7 @@ def mandi_prices(request):
     if district:
         base_qs = base_qs.filter(district__iexact=district)
 
-    # --------------------------
-    # FIND LATEST DATE
-    # --------------------------
-    latest_date = base_qs.aggregate(latest=Max("date"))["latest"]
-
-    if not latest_date:
+    if not base_qs.exists():
         return Response({
             "state": state,
             "district": district,
@@ -43,16 +40,21 @@ def mandi_prices(request):
             "prices": []
         })
 
-    today_qs = base_qs.filter(date=latest_date)
+    # --------------------------
+    # FIND GLOBAL LATEST DATE
+    # --------------------------
+    latest_date = base_qs.aggregate(latest=Max("date"))["latest"]
 
     # --------------------------
-    # BUILD RESPONSE (ONE PER CROP)
+    # GET LATEST AVAILABLE PER CROP
     # --------------------------
+    qs = base_qs.order_by("crop_key", "-date", "-created_at")
+
     seen = set()
     prices = []
 
-    for obj in today_qs.order_by("crop_key", "-created_at"):
-        key = (obj.crop_key, obj.market)
+    for obj in qs:
+        key = obj.crop_key
 
         if key in seen:
             continue
@@ -66,7 +68,7 @@ def mandi_prices(request):
             .filter(
                 crop_key=obj.crop_key,
                 market=obj.market,
-                date__lt=latest_date
+                date__lt=obj.date
             )
             .order_by("-date")
             .first()
@@ -81,7 +83,10 @@ def mandi_prices(request):
 
         prices.append({
             "crop_key": obj.crop_key,
+            "crop_name": obj.crop_name,
             "market": obj.market,
+            "state": obj.state,
+            "district": obj.district,
             "price": obj.price,
             "trend": trend
         })
@@ -92,6 +97,26 @@ def mandi_prices(request):
     return Response({
         "state": state,
         "district": district,
-        "updated_at": latest_date.isoformat(),
+        "updated_at": latest_date.isoformat() if latest_date else None,
+        "count": len(prices),
         "prices": prices
+    })
+
+
+# =====================================================
+# ✅ NEW API — GET ALL STATES FOR DROPDOWN
+# =====================================================
+@api_view(["GET"])
+def mandi_states(request):
+    states = (
+        MandiPrice.objects
+        .exclude(state__isnull=True)
+        .exclude(state__exact="")
+        .values_list("state", flat=True)
+        .distinct()
+        .order_by("state")
+    )
+
+    return Response({
+        "states": list(states)
     })

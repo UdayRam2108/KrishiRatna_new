@@ -4,7 +4,7 @@ import requests
 from datetime import datetime
 
 AGMARKNET_API = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070"
-API_KEY = "/resource/9ef84268-d588-465a-a308-a864a43d0070"
+API_KEY = "579b464db66ec23bdd000001bdaa9dbc27ed43cd6a3125f84c0e5961"
 
 def normalize_crop(name):
     if not name:
@@ -24,12 +24,11 @@ def normalize_crop(name):
         return "chilli"
     return None
 
-
 class Command(BaseCommand):
     help = "Fetch mandi prices from Agmarknet and store in database"
 
     def handle(self, *args, **kwargs):
-        self.stdout.write("📡 Fetching mandi prices...")
+        self.stdout.write("📡 Fetching LIVE mandi prices...")
 
         params = {
             "api-key": API_KEY,
@@ -38,8 +37,15 @@ class Command(BaseCommand):
         }
 
         try:
-            response = requests.get(AGMARKNET_API, params=params, timeout=15)
-            records = response.json().get("records", [])
+            response = requests.get(AGMARKNET_API, params=params, timeout=20)
+            print("HTTP:", response.status_code)
+
+            if response.status_code != 200:
+                print(response.text[:500])
+                return
+
+            data = response.json()
+            records = data.get("records", [])
         except Exception as e:
             self.stderr.write(f"❌ API error: {e}")
             return
@@ -56,13 +62,13 @@ class Command(BaseCommand):
             except:
                 continue
 
-            date_str = r.get("arrival_date") or r.get("date")
+            date_str = r.get("arrival_date")
             try:
                 price_date = datetime.strptime(date_str, "%d/%m/%Y").date()
             except:
-                price_date = datetime.today().date()
+                continue
 
-            obj, created = MandiPrice.objects.update_or_create(
+            MandiPrice.objects.update_or_create(
                 crop_key=crop_key,
                 market=r.get("market", ""),
                 state=r.get("state", ""),
@@ -74,10 +80,6 @@ class Command(BaseCommand):
                     "source": "agmarknet"
                 }
             )
+            saved += 1
 
-            if created:
-                saved += 1
-
-        self.stdout.write(
-            self.style.SUCCESS(f"✅ Mandi prices updated. New records: {saved}")
-        )
+        self.stdout.write(self.style.SUCCESS(f"✅ LIVE Mandi prices updated: {saved} records"))

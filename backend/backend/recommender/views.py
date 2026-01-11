@@ -5,6 +5,43 @@ from rest_framework import status
 import requests
 import pickle
 import os
+import requests
+from mandi.models import MandiPrice
+from datetime import datetime
+
+def fetch_and_store_mandi():
+    url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070/records"
+
+    params = {
+        "api-key": "579b464db66ec23bdd000001bdaa9dbc27ed43cd6a3125f84c0e5961",
+        "format": "json",
+        "limit": 100
+    }
+
+    res = requests.get(url, params=params)
+    data = res.json()
+
+    records = data.get("records", [])
+
+    count = 0
+
+    for r in records:
+        MandiPrice.objects.update_or_create(
+            state=r.get("state"),
+            district=r.get("district"),
+            market=r.get("market"),
+            commodity=r.get("commodity"),
+            variety=r.get("variety"),
+            arrival_date=r.get("arrival_date"),
+            defaults={
+                "min_price": float(r.get("min_price") or 0),
+                "max_price": float(r.get("max_price") or 0),
+                "modal_price": float(r.get("modal_price") or 0),
+            }
+        )
+        count += 1
+
+    return count
 
 # ================================
 # 🔐 USER REGISTRATION API

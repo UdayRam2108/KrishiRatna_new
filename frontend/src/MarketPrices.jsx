@@ -5,18 +5,47 @@ import "./App.css";
 
 function MarketPrices() {
   const { t } = useLanguage();
-  const [prices, setPrices] = useState([]);
-  const [state, setState] = useState("Gujarat");
 
+  const [prices, setPrices] = useState([]);
+  const [states, setStates] = useState([]);
+  const [state, setState] = useState("");
+
+  // Load states once
   useEffect(() => {
-    fetchPrices();
+    fetchStates();
+  }, []);
+
+  // Load prices when state changes
+  useEffect(() => {
+    if (state) {
+      fetchPrices();
+    }
   }, [state]);
 
+  const fetchStates = async () => {
+    try {
+      const res = await axios.get("http://127.0.0.1:8000/api/mandi/states/");
+      const list = res.data.states || [];
+      setStates(list);
+
+      // Auto select first state
+      if (list.length > 0) {
+        setState(list[0]);
+      }
+    } catch (err) {
+      console.error("Failed to load states", err);
+    }
+  };
+
   const fetchPrices = async () => {
-    const res = await axios.get(
-      `http://127.0.0.1:8000/api/mandi/prices/?state=${state}&limit=50`
-    );
-    setPrices(res.data.prices || []);
+    try {
+      const res = await axios.get(
+        `http://127.0.0.1:8000/api/mandi/prices/?state=${state}&limit=100`
+      );
+      setPrices(res.data.prices || []);
+    } catch (err) {
+      console.error("Failed to load prices", err);
+    }
   };
 
   return (
@@ -27,9 +56,11 @@ function MarketPrices() {
       <div style={{ marginBottom: "20px" }}>
         <label>State: </label>
         <select value={state} onChange={(e) => setState(e.target.value)}>
-          <option value="Gujarat">Gujarat</option>
-          <option value="Maharashtra">Maharashtra</option>
-          <option value="Uttar Pradesh">Uttar Pradesh</option>
+          {states.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -58,6 +89,8 @@ function MarketPrices() {
           ))}
         </tbody>
       </table>
+
+      {prices.length === 0 && <p>❌ No data for this state</p>}
     </div>
   );
 }
