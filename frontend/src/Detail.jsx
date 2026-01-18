@@ -122,7 +122,6 @@ function Detail() {
               ? "⏳ Fetching weather..."
               : ` ${t("use_weather")}`}
           </button>
-          
         </div>
 
         <form className="crop-form" onSubmit={handleSubmit}>
@@ -148,9 +147,20 @@ function Detail() {
             <input name="rainfall" placeholder="Rainfall (mm)" onChange={handleChange} required />
           </div>
 
-          <button className="cta-button" disabled={loading}>
-            {loading ? t("loading") : t("submit")}
-          </button>
+          {/* ✅ BOTH BUTTONS */}
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginTop: "20px" }}>
+            <button className="cta-button" disabled={loading}>
+              {loading ? t("loading") : t("submit")}
+            </button>
+
+            <button
+              type="button"
+              className="back-button"
+              onClick={() => navigate("/fertilizer")}
+            >
+              🌱 Fertilizer Suggestion
+            </button>
+          </div>
         </form>
 
         {/* 🔄 LOADER */}

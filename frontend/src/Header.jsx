@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "./context/LanguageContext";
-import logo from "./assets/logo.png";   // ✅ ADD THIS
+import logo from "./assets/logo.png";
 
 function Header() {
   const { language, changeLanguage, t } = useLanguage();
@@ -10,28 +10,26 @@ function Header() {
       <div className="header-bar">
         {/* 🌱 BRAND */}
         <div className="brand" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          
-          {/* ✅ LOGO IMAGE */}
-        <img 
-  src={logo} 
-  alt="KrishiRatna Logo" 
-  style={{ 
-    width: "80px",       
-    height: "80px", 
-    objectFit: "cover",
-    borderRadius: "50%",
-    border: "2px solid white"
-  }} 
-/>
-
-<h2 style={{ fontSize: "2.4rem" }}>KrishiRatna</h2>   {/* 🔥 BIGGER TEXT */}
-
+          <img 
+            src={logo} 
+            alt="KrishiRatna Logo" 
+            style={{ 
+              width: "80px",       
+              height: "80px", 
+              objectFit: "cover",
+              borderRadius: "50%",
+              border: "2px solid white"
+            }} 
+          />
+          <h2 style={{ fontSize: "2.4rem" }}>KrishiRatna</h2>
         </div>
 
         {/* 📑 RIGHT SIDE (MENU + LANGUAGE) */}
         <div className="header-right">
           <nav className="menu-inline">
+            <Link to="/marketplace">Marketplace</Link>
             <Link to="/">{t("back_home").replace("← ", "")}</Link>
+            <Link to="/weather">🌦️ Weather</Link>
             <Link to="/login">{t("login")}</Link>
             <Link to="/register">{t("register")}</Link>
           </nav>

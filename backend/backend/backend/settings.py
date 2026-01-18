@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     'corsheaders',
     # Your Apps
     'recommender',
+    "farmer_market",
     'mandi',
-    
+    'rest_framework_simplejwt',
+
 ]
 
 MIDDLEWARE = [
@@ -140,4 +142,13 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
     }
+}
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+from datetime import timedelta
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }

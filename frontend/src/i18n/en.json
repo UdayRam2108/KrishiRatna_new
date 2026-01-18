@@ -16,7 +16,7 @@
   "form_title": "🌱 Know Your Crop",
   "use_weather": "📍 Use Current Location’s Weather",
   "submit": "Get Recommendation 🚜",
-  "loading": "Analyzing...",
+  "loading": "Loading...",
 
   "best_crop": "🌾 Best crop for you soil",
   "error": "Failed to get recommendation",
@@ -45,12 +45,23 @@
   "cta_title": "🚀 Start Smart Farming Today",
   "cta_desc": "Make better decisions and increase your crop yield.",
   "cta_button": "Get Started 🌱",
+
   "rates": "RATES",
+
   "crop_wheat": "Wheat",
   "crop_maize": "Maize",
   "crop_bajra": "Bajra",
   "crop_onion": "Onion",
   "crop_potato": "Potato",
-  "crop_chilli": "Chilli"
+  "crop_chilli": "Chilli",
 
+  "weather_title": "All Area Weather",
+  "enter_city": "Enter city name",
+  "get_weather": "Get Weather",
+  "use_location": "Use My Location",
+  "forecast": "5 Day Forecast",
+  "temp": "Temperature",
+  "humidity": "Humidity",
+  "condition": "Condition",
+  "city_not_found": "City not found"
 }

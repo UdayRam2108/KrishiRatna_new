@@ -1,3 +1,5 @@
+# backend/recommender/views.py
+
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -5,43 +7,6 @@ from rest_framework import status
 import requests
 import pickle
 import os
-import requests
-from mandi.models import MandiPrice
-from datetime import datetime
-
-def fetch_and_store_mandi():
-    url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070/records"
-
-    params = {
-        "api-key": "579b464db66ec23bdd000001bdaa9dbc27ed43cd6a3125f84c0e5961",
-        "format": "json",
-        "limit": 100
-    }
-
-    res = requests.get(url, params=params)
-    data = res.json()
-
-    records = data.get("records", [])
-
-    count = 0
-
-    for r in records:
-        MandiPrice.objects.update_or_create(
-            state=r.get("state"),
-            district=r.get("district"),
-            market=r.get("market"),
-            commodity=r.get("commodity"),
-            variety=r.get("variety"),
-            arrival_date=r.get("arrival_date"),
-            defaults={
-                "min_price": float(r.get("min_price") or 0),
-                "max_price": float(r.get("max_price") or 0),
-                "modal_price": float(r.get("modal_price") or 0),
-            }
-        )
-        count += 1
-
-    return count
 
 # ================================
 # 🔐 USER REGISTRATION API
@@ -77,10 +42,9 @@ def register_user(request):
 
 
 # ================================
-# 🌦️ WEATHER API
+# 🌦️ WEATHER API (OLD)
 # ================================
 OPENWEATHER_API_KEY = "388657e81d4d0bbd127bd3ee2ddf486d"
-
 
 @api_view(['GET'])
 def weather_view(request):
@@ -118,6 +82,60 @@ def weather_view(request):
 
 
 # ================================
+# 🌦️ WEATHER BY CITY + FORECAST
+# ================================
+@api_view(['GET'])
+def weather_by_city(request):
+    city = request.GET.get("city")
+
+    if not city:
+        return Response({"error": "City required"}, status=400)
+
+    current_url = "https://api.openweathermap.org/data/2.5/weather"
+    forecast_url = "https://api.openweathermap.org/data/2.5/forecast"
+
+    params = {
+        "q": city,
+        "appid": OPENWEATHER_API_KEY,
+        "units": "metric"
+    }
+
+    current_res = requests.get(current_url, params=params)
+    forecast_res = requests.get(forecast_url, params=params)
+
+    if current_res.status_code != 200:
+        return Response({"error": "City not found"}, status=400)
+
+    current_data = current_res.json()
+    forecast_data = forecast_res.json()
+
+    daily = []
+    seen_dates = set()
+
+    for item in forecast_data.get("list", []):
+        date = item["dt_txt"].split(" ")[0]
+        if date not in seen_dates:
+            seen_dates.add(date)
+            daily.append({
+                "date": date,
+                "temp": item["main"]["temp"],
+                "desc": item["weather"][0]["description"]
+            })
+        if len(daily) >= 5:
+            break
+
+    return Response({
+        "city": city,
+        "current": {
+            "temp": current_data["main"]["temp"],
+            "humidity": current_data["main"]["humidity"],
+            "desc": current_data["weather"][0]["description"]
+        },
+        "forecast": daily
+    })
+
+
+# ================================
 # 🌾 CROP RECOMMENDATION API
 # ================================
 @api_view(['POST'])
@@ -135,7 +153,6 @@ def recommend_crop(request):
             float(data['rainfall']),
         ]
 
-        # 🔥 SAFE ABSOLUTE PATH (manage.py based)
         BASE_PATH = os.path.dirname(
             os.path.dirname(
                 os.path.dirname(os.path.abspath(__file__))
@@ -157,3 +174,44 @@ def recommend_crop(request):
             {"error": str(e)},
             status=status.HTTP_400_BAD_REQUEST
         )
+
+
+# ================================
+# 🌱 FERTILIZER RECOMMENDATION API
+# ================================
+@api_view(['POST'])
+def fertilizer_recommend(request):
+    try:
+        data = request.data
+
+        crop = data.get("crop", "")
+        N = float(data.get("N"))
+        P = float(data.get("P"))
+        K = float(data.get("K"))
+        ph = float(data.get("ph"))
+
+        suggestions = []
+
+        if N < 50:
+            suggestions.append("Urea (Nitrogen)")
+        if P < 40:
+            suggestions.append("DAP (Phosphorus)")
+        if K < 40:
+            suggestions.append("Potash (Potassium)")
+        if ph < 5.5:
+            suggestions.append("Lime (to increase soil pH)")
+        if ph > 7.5:
+            suggestions.append("Gypsum (to reduce soil pH)")
+
+        if not suggestions:
+            suggestions.append("Organic Compost is enough. Soil is balanced")
+
+        return Response({
+            "crop": crop,
+            "suggestions": suggestions
+        })
+
+    except Exception as e:
+        return Response({
+            "error": str(e)
+        }, status=400)
